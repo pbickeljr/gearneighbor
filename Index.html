@@ -1,1 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#155e4b">
+<meta name="description" content="GearNeighbor - borrow useful things from people nearby.">
+<title>GearNeighbor — Borrow Nearby</title>
+
+<style>
+:root{
+  --green:#155e4b;
+  --green2:#1d8065;
+  --mint:#e7f5ef;
+  --cream:#fbfaf5;
+  --ink:#17231f;
+  --muted:#68756f;
+  --line:#dfe7e2;
+  --white:#fff;
+  --orange:#f59e0b;
+  --shadow:0 12px 35px rgba(20,45,36,.09);
+  --radius:20px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+}
+
+button,input,select,textarea{font:inherit}
+
+button{cursor:pointer}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(251,250,245,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  max-width:1180px;
+  margin:auto;
+  padding:15px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  font-size:20px;
+  color:var(--green);
+}
+
+.logoMark{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--green);
+  color:white;
+}
+
+.navActions{
+  display:flex;
+  gap:9px;
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:11px 16px;
+  font-weight:750;
+  transition:.2s;
+}
+
+.btn:hover{transform:translateY(-1px)}
+
+.primary{
+  background:var(--green);
+  color:white;
+}
+
+.secondary{
+  background:white;
+  color:var(--green);
+  border:1px solid var(--line);
+}
+
+.hero{
+  max-width:1180px;
+  margin:auto;
+  padding:55px 20px 28px;
+}
+
+.heroGrid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:28px;
+  align-items:center;
+}
+
+.badge{
+  display:inline-flex;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--mint);
+  color:var(--green);
+  font-size:13px;
+  font-weight:800;
+}
+
+h1{
+  font-size:clamp(38px,6vw,68px);
+  line-height:.98;
+  letter-spacing:-3px;
+  margin:17px 0;
+  max-width:700px;
+}
+
+.hero p{
+  font-size:18px;
+  line-height:1.65;
+  color:var(--muted);
+  max-width:650px;
+}
+
+.searchBox{
+  display:flex;
+  gap:9px;
+  margin-top:25px;
+  max-width:680px;
+}
+
+.searchBox input{
+  flex:1;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:15px;
+  background:white;
+  outline:none;
+}
+
+.searchBox input:focus{
+  border-color:var(--green2);
+  box-shadow:0 0 0 4px rgba(29,128,101,.1);
+}
+
+.heroCard{
+  background:var(--green);
+  color:white;
+  border-radius:28px;
+  padding:30px;
+  min-height:300px;
+  box-shadow:var(--shadow);
+}
+
+.heroCard h2{
+  font-size:29px;
+  margin-top:0;
+}
+
+.heroCard p{
+  color:#dceee8;
+}
+
+.stat{
+  display:flex;
+  justify-content:space-between;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+
+main{
+  max-width:1180px;
+  margin:auto;
+  padding:10px 20px 60px;
+}
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin:18px 0;
+}
+
+.categories{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-bottom:4px;
+}
+
+.chip{
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:999px;
+  padding:9px 14px;
+  font-weight:700;
+  color:#50615a;
+}
+
+.chip.active{
+  background:var(--green);
+  color:white;
+  border-color:var(--green);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 5px 18px rgba(20,45,36,.04);
+}
+
+.cardTop{
+  height:175px;
+  display:grid;
+  place-items:center;
+  font-size:65px;
+  background:linear-gradient(135deg,#e9f6f0,#f7eee0);
+  position:relative;
+}
+
+.heart{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 3px 12px rgba(0,0,0,.1);
+}
+
+.cardBody{
+  padding:17px;
+}
+
+.card h3{
+  margin:0 0 7px;
+  font-size:18px;
+}
+
+.meta{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.cardBottom{
+  margin-top:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.owner{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#d8eee6;
+  display:grid;
+  place-items:center;
+  color:var(--green);
+}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:50;
+  background:rgba(0,0,0,.48);
+  padding:20px;
+  overflow:auto;
+}
+
+.modal.open{display:grid;place-items:center}
+
+.modalBox{
+  background:white;
+  width:min(560px,100%);
+  border-radius:24px;
+  padding:25px;
+  box-shadow:0 25px 70px rgba(0,0,0,.2);
+}
+
+.modalHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.close{
+  border:0;
+  background:#eef2ef;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+}
+
+.form{
+  display:grid;
+  gap:13px;
+  margin-top:18px;
+}
+
+.form label{
+  font-size:13px;
+  font-weight:800;
+}
+
+.form input,.form select,.form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  background:#fff;
+}
+
+.form textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.notice{
+  background:#fff8df;
+  border:1px solid #f1df9c;
+  padding:12px;
+  border-radius:12px;
+  font-size:13px;
+  color:#6e5710;
+}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:30px 20px;
+  border-top:1px solid var(--line);
+}
+
+@media(max-width:850px){
+  .heroGrid{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){
+  .navActions .secondary{display:none}
+  .grid{grid-template-columns:1fr}
+  .searchBox{flex-direction:column}
+  h1{letter-spacing:-2px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <div class="logoMark">G</div>
+      GearNeighbor
+    </div>
+
+    <div class="navActions">
+      <button class="btn secondary" onclick="showFavorites()">♡ Saved</button>
+      <button class="btn primary" onclick="openModal('listModal')">+ List an Item</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="heroGrid">
+
+    <div>
+      <span class="badge">LOCAL SHARING, MADE SIMPLE</span>
+
+      <h1>Why buy it when your neighbor has it?</h1>
+
+      <p>
+        Find tools, camping gear, party supplies, sports equipment and
+        everyday things available from people nearby.
+      </p>
+
+      <div class="searchBox">
+        <input id="search" placeholder="Try “drill”, “camping”, or “projector”"
+               oninput="render()">
+        <button class="btn primary" onclick="useLocation()">Use my area</button>
+      </div>
+    </div>
+
+    <div class="heroCard">
+      <h2>Borrow locally.</h2>
+      <p>
+        Spend less on things you only need occasionally.
+        Keep useful items circulating in your community.
+      </p>
+
+      <div class="stat">
+        <span>Active examples</span>
+        <strong id="itemCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Categories</span>
+        <strong>8</strong>
+      </div>
+
+      <div class="stat">
+        <span>Listing fee</span>
+        <strong>$0</strong>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<main>
+
+  <div class="toolbar">
+    <div class="categories" id="categories"></div>
+
+    <select id="sort" onchange="render()" class="chip">
+      <option value="near">Nearby</option>
+      <option value="new">Newest</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+
+  <section class="grid" id="grid"></section>
+
+</main>
+
+<footer>
+  GearNeighbor MVP • No payment processing • No identity verification • Demo data stored locally
+</footer>
+
+
+<!-- LIST MODAL -->
+<div class="modal" id="listModal">
+  <div class="modalBox">
+
+    <div class="modalHeader">
+      <h2>List your item</h2>
+      <button class="close" onclick="closeModal('listModal')">×</button>
+    </div>
+
+    <div class="notice">
+      This MVP stores your listing only in this browser.
+      A future production version would connect listings to a secure database.
+    </div>
+
+    <form class="form" onsubmit="addItem(event)">
+
+      <div>
+        <label>Item name</label>
+        <input id="newName" required placeholder="Example: Cordless drill">
+      </div>
+
+      <div>
+        <label>Category</label>
+        <select id="newCategory">
+          <option>Tools</option>
+          <option>Camping</option>
+          <option>Sports</option>
+          <option>Party</option>
+          <option>Baby</option>
+          <option>Electronics</option>
+          <option>Home</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Area</label>
+        <input id="newArea" required placeholder="Example: Albany, NY">
+      </div>
+
+      <div>
+        <label>Short description</label>
+        <textarea id="newDescription"
+          placeholder="What should a neighbor know?"></textarea>
+      </div>
+
+      <div>
+        <label>Your first name</label>
+        <input id="newOwner" required placeholder="Example: Alex">
+      </div>
+
+      <button class="btn primary">Publish Listing</button>
+
+    </form>
+  </div>
+</div>
+
+
+<!-- REQUEST MODAL -->
+<div class="modal" id="requestModal">
+  <div class="modalBox">
+
+    <div class="modalHeader">
+      <h2>Request this item</h2>
+      <button class="close" onclick="closeModal('requestModal')">×</button>
+    </div>
+
+    <div id="requestContent"></div>
+
+    <div class="form">
+      <label>Message to owner</label>
+      <textarea id="requestMessage"
+        placeholder="Hi! I'd love to borrow this for the weekend..."></textarea>
+
+      <button class="btn primary" onclick="sendRequest()">
+        Send Request
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+const icons = {
+  Tools:"🔧",
+  Camping:"⛺",
+  Sports:"⚽",
+  Party:"🎉",
+  Baby:"🍼",
+  Electronics:"📷",
+  Home:"🏠",
+  Other:"📦"
+};
+
+let items = JSON.parse(localStorage.getItem("gearNeighborItems") || "null") || [
+
+  {
+    id:1,
+    name:"Cordless Drill",
+    category:"Tools",
+    area:"Albany, NY",
+    description:"18V drill with charger and two batteries.",
+    owner:"Maya",
+    rating:"4.9",
+    distance:1.2
+  },
+
+  {
+    id:2,
+    name:"Two-Person Camping Tent",
+    category:"Camping",
+    area:"Troy, NY",
+    description:"Waterproof tent, easy setup. Great for weekend trips.",
+    owner:"Chris",
+    rating:"5.0",
+    distance:3.4
+  },
+
+  {
+    id:3,
+    name:"Portable Projector",
+    category:"Electronics",
+    area:"Colonie, NY",
+    description:"1080p projector with HDMI cable.",
+    owner:"Jordan",
+    rating:"4.8",
+    distance:4.1
+  },
+
+  {
+    id:4,
+    name:"Folding Tables",
+    category:"Party",
+    area:"Albany, NY",
+    description:"Three six-foot folding tables for parties and events.",
+    owner:"Sam",
+    rating:"4.9",
+    distance:2.0
+  },
+
+  {
+    id:5,
+    name:"Kids Bike",
+    category:"Sports",
+    area:"Latham, NY",
+    description:"Small children's bike in good condition.",
+    owner:"Taylor",
+    rating:"4.7",
+    distance:5.2
+  },
+
+  {
+    id:6,
+    name:"Pressure Washer",
+    category:"Tools",
+    area:"Bethlehem, NY",
+    description:"Electric pressure washer. Perfect for patios and cars.",
+    owner:"Alex",
+    rating:"5.0",
+    distance:7.1
+  }
+
+];
+
+let category = "All";
+let favorites = JSON.parse(localStorage.getItem("gearNeighborFavorites") || "[]");
+let selectedItem = null;
+
+
+function save(){
+  localStorage.setItem("gearNeighborItems", JSON.stringify(items));
+  localStorage.setItem("gearNeighborFavorites", JSON.stringify(favorites));
+}
+
+
+function renderCategories(){
+
+  const cats = [
+    "All",
+    "Tools",
+    "Camping",
+    "Sports",
+    "Party",
+    "Baby",
+    "Electronics",
+    "Home",
+    "Other"
+  ];
+
+  document.getElementById("categories").innerHTML =
+    cats.map(c => `
+      <button
+        class="chip ${category === c ? "active" : ""}"
+        onclick="setCategory('${c}')">
+        ${c}
+      </button>
+    `).join("");
+}
+
+
+function setCategory(c){
+  category = c;
+  render();
+}
+
+
+function render(){
+
+  renderCategories();
+
+  const query =
+    document.getElementById("search").value.toLowerCase().trim();
+
+  let filtered = items.filter(item => {
+
+    const matchesCategory =
+      category === "All" || item.category === category;
+
+    const text =
+      `${item.name} ${item.category} ${item.area} ${item.description}`
+      .toLowerCase();
+
+    return matchesCategory && text.includes(query);
+  });
+
+
+  const sort = document.getElementById("sort").value;
+
+  if(sort === "near"){
+    filtered.sort((a,b) => (a.distance || 99) - (b.distance || 99));
+  }
+
+  if(sort === "new"){
+    filtered.sort((a,b) => b.id - a.id);
+  }
+
+  if(sort === "name"){
+    filtered.sort((a,b) => a.name.localeCompare(b.name));
+  }
+
+
+  document.getElementById("itemCount").textContent = items.length;
+
+
+  const grid = document.getElementById("grid");
+
+  if(!filtered.length){
+    grid.innerHTML = `
+      <div class="empty">
+        <h2>No items found</h2>
+        <p>Try another search or list the first item in this category.</p>
+        <button class="btn primary" onclick="openModal('listModal')">
+          List an Item
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+
+  grid.innerHTML = filtered.map(item => {
+
+    const saved = favorites.includes(item.id);
+
+    return `
+      <article class="card">
+
+        <div class="cardTop">
+          <span>${icons[item.category] || "📦"}</span>
+
+          <button
+            class="heart"
+            onclick="toggleFavorite(${item.id})"
+            title="Save">
+            ${saved ? "❤️" : "♡"}
+          </button>
+        </div>
+
+        <div class="cardBody">
+
+          <h3>${escapeHTML(item.name)}</h3>
+
+          <div class="meta">
+            ${escapeHTML(item.category)} ·
+            ${escapeHTML(item.area)}
+            <br>
+            ${item.distance ? item.distance + " miles away · " : ""}
+            ★ ${item.rating || "New"}
+          </div>
+
+          <p class="meta">
+            ${escapeHTML(item.description || "")}
+          </p>
+
+          <div class="cardBottom">
+
+            <div class="owner">
+              <div class="avatar">
+                ${escapeHTML(item.owner.charAt(0).toUpperCase())}
+              </div>
+              ${escapeHTML(item.owner)}
+            </div>
+
+            <button
+              class="btn primary"
+              onclick="openRequest(${item.id})">
+              Request
+            </button>
+
+          </div>
+
+        </div>
+      </article>
+    `;
+
+  }).join("");
+}
+
+
+function toggleFavorite(id){
+
+  if(favorites.includes(id)){
+    favorites = favorites.filter(x => x !== id);
+  }else{
+    favorites.push(id);
+  }
+
+  save();
+  render();
+}
+
+
+function showFavorites(){
+
+  document.getElementById("search").value = "";
+
+  const savedItems = items.filter(x => favorites.includes(x.id));
+
+  category = "All";
+
+  const grid = document.getElementById("grid");
+
+  if(!savedItems.length){
+    grid.innerHTML = `
+      <div class="empty">
+        <h2>No saved items yet</h2>
+        <p>Tap the heart on any item to save it.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = savedItems.map(item => {
+
+    return `
+      <article class="card">
+
+        <div class="cardTop">
+          <span>${icons[item.category] || "📦"}</span>
+
+          <button class="heart"
+            onclick="toggleFavorite(${item.id})">
+            ❤️
+          </button>
+        </div>
+
+        <div class="cardBody">
+
+          <h3>${escapeHTML(item.name)}</h3>
+
+          <div class="meta">
+            ${escapeHTML(item.category)} ·
+            ${escapeHTML(item.area)}
+          </div>
+
+          <p class="meta">
+            ${escapeHTML(item.description || "")}
+          </p>
+
+          <div class="cardBottom">
+            <span class="owner">
+              <span class="avatar">
+                ${escapeHTML(item.owner.charAt(0).toUpperCase())}
+              </span>
+              ${escapeHTML(item.owner)}
+            </span>
+
+            <button class="btn primary"
+              onclick="openRequest(${item.id})">
+              Request
+            </button>
+          </div>
+
+        </div>
+
+      </article>
+    `;
+
+  }).join("");
+}
+
+
+function openModal(id){
+  document.getElementById(id).classList.add("open");
+}
+
+
+function closeModal(id){
+  document.getElementById(id).classList.remove("open");
+}
+
+
+function addItem(event){
+
+  event.preventDefault();
+
+  const name = document.getElementById("newName").value;
+  const category = document.getElementById("newCategory").value;
+  const area = document.getElementById("newArea").value;
+  const description = document.getElementById("newDescription").value;
+  const owner = document.getElementById("newOwner").value;
+
+  items.unshift({
+    id:Date.now(),
+    name,
+    category,
+    area,
+    description:description || "Available to borrow locally.",
+    owner,
+    rating:"New",
+    distance:0.5
+  });
+
+  save();
+
+  event.target.reset();
+
+  closeModal("listModal");
+
+  category = "All";
+
+  render();
+
+  alert("Your item is now listed on this device.");
+}
+
+
+function openRequest(id){
+
+  selectedItem = items.find(x => x.id === id);
+
+  if(!selectedItem) return;
+
+  document.getElementById("requestContent").innerHTML = `
+    <div style="
+      background:#e7f5ef;
+      padding:17px;
+      border-radius:15px;
+      margin-top:12px">
+
+      <strong>${escapeHTML(selectedItem.name)}</strong>
+
+      <div style="margin-top:5px;color:#68756f">
+        ${escapeHTML(selectedItem.area)}
+        · Owner: ${escapeHTML(selectedItem.owner)}
+      </div>
+
+    </div>
+  `;
+
+  document.getElementById("requestMessage").value =
+    `Hi ${selectedItem.owner}! I'd like to borrow your ${selectedItem.name}.`;
+
+  openModal("requestModal");
+}
+
+
+function sendRequest(){
+
+  if(!selectedItem) return;
+
+  const message =
+    document.getElementById("requestMessage").value.trim();
+
+  if(!message){
+    alert("Please add a message.");
+    return;
+  }
+
+  closeModal("requestModal");
+
+  alert(
+    `Demo request sent to ${selectedItem.owner}!\n\n` +
+    `In the production version, this would create a real request `
+    + `and notify the owner.`
+  );
+}
+
+
+function useLocation(){
+
+  if(!navigator.geolocation){
+    alert("Location isn't available in this browser.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+
+    () => {
+      alert(
+        "Location access works. The production version can use this "
+        + "to show listings within your chosen radius."
+      );
+    },
+
+    () => {
+      alert(
+        "Location permission wasn't granted. You can still search manually."
+      );
+    }
+
+  );
+}
+
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+document.querySelectorAll(".modal").forEach(modal => {
+
+  modal.addEventListener("click", event => {
+
+    if(event.target === modal){
+      modal.classList.remove("open");
+    }
+
+  });
+
+});
+
+
+render();
+
+</script>
+
+</body>
+</html>
 
